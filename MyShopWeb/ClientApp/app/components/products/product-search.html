@@ -1,0 +1,105 @@
+﻿<div>
+    <h2>Sporting Goods >> Bikes</h2>
+</div>
+<div class="search-bar">
+    <div class='row'>
+        <div class='col-sm-3'>
+            <input type="text" placeholder="Search here for products" [(ngModel)]="searchRequest.Keyword" (keyup.enter)="getProducts()" />
+        </div>
+        <!--<div class='col-sm-1'>
+        <button (click)="getProducts()">Search</button>
+    </div>-->
+        <div class='col-sm-5'>
+            Category:
+            <select [(ngModel)]="searchRequest.Category" (change)="getProducts()" *ngIf="isResultsAvailable">
+                <option [ngValue]="category.Key" *ngFor="let category of categoryFilter" [selected]="category.Value === searchRequest.Category">
+                    {{category.Value}} ({{category.Count}})
+                </option>
+            </select>
+
+            <button (click)="resetCategory()">Reset</button>
+        </div>
+
+        <div class="col-sm-2" *ngIf="isResultsAvailable">
+            Sort by:
+            <select [(ngModel)]="searchRequest.OrderBy" (change)="getProducts()">
+                <option [ngValue]="orderBy.Key" *ngFor="let orderBy of orderByOptions" [selected]="orderBy.Selected === true">
+                    {{orderBy.Value}}
+                </option>
+            </select>
+
+        </div>
+    </div>
+    <div>
+        <label *ngIf="searchRequest.Category">Category: {{ searchRequest.Category}} | </label>
+        <label *ngIf="searchRequest.Color"> Colors: {{searchRequest.Color}} | </label>
+        <label *ngIf="isResultsAvailable">Results Found: {{searchResult.count}}</label>
+        <div class="alert alert-warning" role="alert" *ngIf="!isResultsAvailable">
+            No results found!
+        </div>
+    </div>
+
+</div>
+<br />
+<div class='row' *ngIf="isResultsAvailable">
+    <div class='col-sm-1'>
+        <div class="form-group">
+            <label for="options">Colors:</label>
+            <div *ngFor="let color of colorFilter">
+                <label>
+                    <input type="checkbox"
+                           name="options"
+                           value="{{color.Value}}"
+                           [(ngModel)]="color.Selected" />
+                    {{color.Value}} ({{color.Count}})
+                </label>
+            </div>
+            <button (click)="applyColorFilter()">Apply</button>
+            <button (click)="resetColor()">Reset</button>
+        </div>
+        <div class="form-group">
+            <label for="options">Sizes:</label>
+            <div *ngFor="let size of sizeFilter">
+                <label>
+                    <input type="checkbox"
+                           name="options"
+                           value="{{size.Value}}"
+                           [(ngModel)]="size.Selected" />
+                    {{size.Value}} ({{size.Count}})
+                </label>
+            </div>
+            <button (click)="applySizeFilter()">Apply</button>
+            <button (click)="resetSize()">Reset</button>
+        </div>
+    </div>
+    <div class='col-sm-8'>
+        <table class='table' *ngIf="isResultsAvailable">
+            <tbody>
+                <tr *ngFor="let product of searchResult.results">
+                    <td>
+                        <img />
+                    </td>
+                    <td>
+                        <h3><a href="#">{{ product.document.ProductName }}</a></h3>
+                        <label class="itemLabel">Model:</label> {{ product.document.ProductNumber }}
+                        <label class="itemLabel">Category:</label> {{ product.document.Category }}
+                        <label class="itemLabel">Color:</label> {{ product.document.Color }}
+                        <label class="itemLabel">Size:</label> {{ product.document.Size }}
+                        <label class="itemLabel">Price:</label> {{ product.document.ListPrice }}
+                        <br />
+                        {{ product.document.Description }}
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-warning">Add to Cart</button>
+                    </td>                   
+                </tr>
+            </tbody>
+        </table>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item" *ngIf="searchRequest.PageNumber>0"><a class="page-link" (click)="goToPreviousPage()"><< Previous</a></li>
+                <li class="page-item"><a class="page-link" (click)="goToNextPage()">Next >></a></li>
+            </ul>
+        </nav>
+    </div>
+</div>

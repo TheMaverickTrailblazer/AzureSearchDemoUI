@@ -6,3 +6,5 @@ The Project is created using Visual Studio 2017 template for Angular4 and ASP.NE
 Search specific components present at .\ClientApp\app\components\products
 
 Please remember to update api endpoint of your service at .\products\product-search.service.ts
+
+Find demonstration of API implementation at https://github.com/karthik-jambulingam/AzureSearchDemoAPI
